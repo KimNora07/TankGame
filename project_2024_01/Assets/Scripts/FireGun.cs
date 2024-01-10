@@ -6,22 +6,31 @@ public class FireGun : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject projectile;
+    public GameObject projectile_Ulti;
 
-    public float fireRate = 1.0f;           //ÃÑ¾Ë ¹ß»ç ¼Óµµ 
+    public float fireRate = 1.0f;           //ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½ ï¿½Óµï¿½ 
     private float nextFireTime;
 
     // Update is called once per frame
     void Update()
     {
-        //if(Input.GetMouseButtonDown(0)) //¸¶¿ì½º ¿ÞÂÊ ¹öÆ°À» ´­·¶À» ¶§
-        //{//ÃÑ¾Ë ÇÁ¸®ÆÕÀ» »ý¼ºÇÑ´Ù. »ý¼º À§Ä¡´Â firePointÀÇ À§Ä¡°ª°ú , È¸Àü°ªÀ» Áß½ÉÀ¸·Î »ý¼ºÇÑ´Ù. 
+        if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
+        //if(Input.GetMouseButtonDown(0)) //ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+        //{//ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ firePointï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ , È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. 
         //    Instantiate(projectile, firePoint.transform.position, firePoint.transform.rotation);
         //}
 
         if (Time.time > nextFireTime)
         {
-            nextFireTime = Time.time + 1f / fireRate;       //½Ã°£´ëºñ ½î´Â È½¼ö 
+            nextFireTime = Time.time + 1f / fireRate;       //ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È½ï¿½ï¿½ 
             Instantiate(projectile, firePoint.transform.position, firePoint.transform.rotation);
+        }
+        if(Input.GetMouseButtonDown(0)){
+            if (Time.time > nextFireTime)
+            {
+                nextFireTime = Time.time + 1f / fireRate;       //ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È½ï¿½ï¿½ 
+                Instantiate(projectile_Ulti, firePoint.transform.position, firePoint.transform.rotation);
+            }
         }
     }
 }

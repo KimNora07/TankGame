@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float moveSpeed = 8.0f;          //ÀÌµ¿ ¼Óµµ
-    public float rotationSpeed = 1.0f;      //Æ÷Å¾ È¸Àü ¼Óµµ
-    public GameObject projectile;           //ÃÑ¾Ë ÇÁ¸®ÆÕ 
+    public float moveSpeed = 8.0f;          //ï¿½Ìµï¿½ ï¿½Óµï¿½
+    public float rotationSpeed = 1.0f;      //ï¿½ï¿½Å¾ È¸ï¿½ï¿½ ï¿½Óµï¿½
+    public GameObject projectile;           //ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
     public GameObject Pivot;
-    public Transform firePoint;             //ÃÑ¾Ë ¹ß»ç À§Ä¡
-    public float fireRate = 1.0f;           //ÃÑ¾Ë ¹ß»ç ¼Óµµ 
+    public Transform firePoint;             //ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½Ä¡
+    public float fireRate = 1.0f;           //ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½ ï¿½Óµï¿½ 
 
     private Rigidbody body;
     private Transform player;
@@ -22,19 +22,19 @@ public class EnemyController : MonoBehaviour
 
     public void DropItems()
     {
-        int RandNumer = Random.Range(0, 100);       // 0 ~ 99ÀÇ ·£´ý °ªÀ» ¸®ÅÏ 
+        int RandNumer = Random.Range(0, 100);       // 0 ~ 99ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 
-        if(RandNumer >= 0 && RandNumer < 50)        // 0 ~ 50 ÀÌÀü±îÁö 50% È®·ü·Î 1¹øÂ° ¾ÆÀÌÅÛ µå¶ø
+        if(RandNumer >= 0 && RandNumer < 50)        // 0 ~ 50 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 50% È®ï¿½ï¿½ï¿½ï¿½ 1ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             GameObject temp = (GameObject)Instantiate(dropitems[0], transform.position, Quaternion.identity);            
         }
-        else if (RandNumer >= 50 && RandNumer < 70)  // 50 ~ 70 ÀÌÀü±îÁö 20% È®·ü·Î 2¹øÂ° ¾ÆÀÌÅÛ µå¶ø
+        else if (RandNumer >= 50 && RandNumer < 70)  // 50 ~ 70 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 20% È®ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½Â° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             GameObject temp = (GameObject)Instantiate(dropitems[1], transform.position, Quaternion.identity);
         }
         else
         {
-            //ÀÌ ¿Ü¿¡´Â µû·Î Çàµ¿ ¾øÀ½ 
+            //ï¿½ï¿½ ï¿½Ü¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½àµ¿ ï¿½ï¿½ï¿½ï¿½ 
         }
 
     }
@@ -44,31 +44,33 @@ public class EnemyController : MonoBehaviour
         maxHp = 3;
         currentHP = 3;
 
-        body = GetComponent<Rigidbody>();       //Áö±Ý ¿ÀºêÁ§Æ®ÀÇ RigidBody¸¦ °¡Á®¿È
-        player = GameObject.FindGameObjectWithTag("Player").transform;      //Player Tag¸¦ °¡Áö°í ÀÖ´Â ¿ÀºêÁ§Æ® tranformÀ» ÀÔ·Â
+        body = GetComponent<Rigidbody>();       //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ RigidBodyï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        player = GameObject.FindGameObjectWithTag("Player").transform;      //Player Tagï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® tranformï¿½ï¿½ ï¿½Ô·ï¿½
     }   
     void Update()
     {
-        if(player != null)      //Player °¡ ÀÖÀ»¶§ ¸¸ ¾÷µ¥ÀÌÆ® ¹®À» »ç¿ëÇØ¼­ µ¿ÀÛ
+        if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
+
+        if(player != null)      //Player ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
-            if (Vector3.Distance(player.position, transform.position) > 5.0f) //Vector3.Distance À¯´ÏÆ¼¿¡¼­ Á¦°øÇÏ´Â °Å¸® °è»ê ÇÔ¼ö 
+            if (Vector3.Distance(player.position, transform.position) > 5.0f) //Vector3.Distance ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ 
             {
-                Vector3 direction = (player.position - transform.position).normalized; //ÀÌµ¿ ¹æÇâ¼º (ÇÃ·¹ÀÌ¾î¿Í ÀÌ ¿ÀºêÁ§Æ®(Àû))
-                body.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime); //¹æÇâ¼º °è»êµÈ°ÍÀ» ¹Ý¿µ
+                Vector3 direction = (player.position - transform.position).normalized; //ï¿½Ìµï¿½ ï¿½ï¿½ï¿½â¼º (ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®(ï¿½ï¿½))
+                body.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime); //ï¿½ï¿½ï¿½â¼º ï¿½ï¿½ï¿½È°ï¿½ï¿½ï¿½ ï¿½Ý¿ï¿½
             }
-            //Æ÷Å¾ È¸Àü ¼Ò½º ÄÚµå 
-            Vector3 targetDirection = (player.position - Pivot.transform.position).normalized;  //Æ÷Å¾ÀÇ ¹æÇâ¼º °è»ê
+            //ï¿½ï¿½Å¾ È¸ï¿½ï¿½ ï¿½Ò½ï¿½ ï¿½Úµï¿½ 
+            Vector3 targetDirection = (player.position - Pivot.transform.position).normalized;  //ï¿½ï¿½Å¾ï¿½ï¿½ ï¿½ï¿½ï¿½â¼º ï¿½ï¿½ï¿½
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-            //°è»êµÈ È¸Àü°ªÀ» ¹Ý¿µ
+            //ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¿ï¿½
             Pivot.transform.rotation = Quaternion.Lerp(Pivot.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); 
 
-            //ÃÑ¾Ë ¹ß»ç
+            //ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½
 
             if(Time.time > nextFireTime) 
             {
-                nextFireTime = Time.time + 1f / fireRate;       //½Ã°£´ëºñ ½î´Â È½¼ö 
+                nextFireTime = Time.time + 1f / fireRate;       //ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È½ï¿½ï¿½ 
                 GameObject temp = (GameObject)Instantiate(projectile, firePoint.transform.position, firePoint.transform.rotation);
-                temp.GetComponent<ProjectileMove>().projectileType = ProjectileMove.PROJECTILETYPE.ENEMY;   //¹ß»çÃ¼¿¡ ÀûÀÌ ½ð ÃÑ¾ËÀÌ¶ó°í ÀÌ¸§À» ¸¸µé¾îÁÜ
+                temp.GetComponent<ProjectileMove>().projectileType = ProjectileMove.PROJECTILETYPE.ENEMY;   //ï¿½ß»ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             }
         }
     }

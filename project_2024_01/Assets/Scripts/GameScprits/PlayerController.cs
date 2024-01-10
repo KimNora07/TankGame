@@ -16,8 +16,10 @@ public class PlayerController : MonoBehaviour
     }    
     void Update()
     {
+        if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
+
         //����Ű�� ���ؼ� �̵� ���Ͱ��� �����Ѵ�. 
-        velocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * GameManager.Instance.moveSpeed;
+        velocity = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized * GameManager.Instance.moveSpeed;
 
         //ȭ�鿡�� -> ���� 3D ���� ��ǥ�� ��ȯ�ؼ� Vector3�� �ִ´�. 
         Vector3 mousePos = viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
@@ -31,6 +33,8 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
+        
         body.MovePosition(body.position + velocity * Time.fixedDeltaTime);
     }
 

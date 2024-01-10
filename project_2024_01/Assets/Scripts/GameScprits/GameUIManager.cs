@@ -6,15 +6,19 @@ using UnityEngine.UI;
 
 public class GameUIManager : MonoBehaviour
 {
+    public static GameUIManager Instance;  // 간단한 싱글톤 화
+
     public Slider slider_Player_Hp_Bar;
     public Slider slider_Player_Exp_Bar;
     public TMP_Text tmptext_Player_Hp;
     public TMP_Text tmptext_Player_Exp;
     public TMP_Text tmptext_Player_Level;
+    
+    public GameObject levelUpPanel;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        Instance = this;
     }
 
     // Update is called once per frame
@@ -27,5 +31,9 @@ public class GameUIManager : MonoBehaviour
         tmptext_Player_Hp.text = "Hp : " + GameManager.Instance.currentHp.ToString();
         tmptext_Player_Exp.text = "Exp : " + GameManager.Instance.currentExp.ToString();
         tmptext_Player_Level.text = "Level : " + GameManager.Instance.level.ToString();
+    }
+
+    public void levelUpPanel_OnOFF(bool temp){
+        levelUpPanel.SetActive(temp);
     }
 }

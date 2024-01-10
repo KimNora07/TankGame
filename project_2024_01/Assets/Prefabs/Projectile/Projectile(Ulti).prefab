@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 6476210950182715925}
   - component: {fileID: 1858393137064014027}
   - component: {fileID: 1944468107156289616}
-  - component: {fileID: 4545538867257933701}
   - component: {fileID: 6643011334120437555}
+  - component: {fileID: -7744712339092686557}
   m_Layer: 0
-  m_Name: Projectile
+  m_Name: Projectile(Ulti)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5.03}
-  m_LocalScale: {x: 1.5951, y: 1.5951, z: 1.5951}
+  m_LocalScale: {x: 12.416259, y: 12.128503, z: 4.747177}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1596536155569369436}
@@ -106,26 +106,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.26
-  m_Center: {x: 0, y: 0, z: 0.27}
---- !u!114 &4545538867257933701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1601585384641989911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6805e78a55a6934b8ffac31116a033e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifeTime: 10
-  moveSpeed: 20
-  damage: 1
-  VFX_Fire_B: {fileID: 2504214343621411470, guid: 3ed0d324122d7b24eaec75c55c74aafc, type: 3}
-  VFX_WW_Explosion: {fileID: 4593184484909914552, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
-  projectileType: 0
+  m_Radius: 0.14
+  m_Center: {x: 0, y: 0.03, z: 0.27}
 --- !u!54 &6643011334120437555
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,6 +135,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-7744712339092686557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601585384641989911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edde5057e089dec4795747db388dd2a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 10
+  moveSpeed: 20
+  damage: 1
+  VFX_Fire_B: {fileID: 2504214343621411470, guid: 3ed0d324122d7b24eaec75c55c74aafc, type: 3}
+  VFX_WW_Explosion: {fileID: 4593184484909914552, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
+  projectileType: 0
 --- !u!1001 &1270771910191011511
 PrefabInstance:
   m_ObjectHideFlags: 0

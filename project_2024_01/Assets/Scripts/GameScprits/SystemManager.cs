@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class SystemManager : MonoBehaviour
 {
+    public enum ROUNDTYPE : int{
+        NORMAL,
+        BOSS
+    }
+
+    public ROUNDTYPE roundType = ROUNDTYPE.NORMAL;
+
+    public int roundIndex = 1;
     public float roundTime = 0.0f;
     public float roundEndTime = 30.0f;
 
@@ -11,35 +19,61 @@ public class SystemManager : MonoBehaviour
     public float nextspawnTime = 2.0f;
 
     public GameObject[] EnemyObjects;
+    public GameObject[] EnemyBossObj;
     public Transform[] spawntransform;
+    public GameObject EnemyBossCheck;
 
     public GameObject player;
 
     // Update is called once per frame
     void Update()
     { 
+        if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
+
         if (player != null)
         {
-            spawnTime += Time.deltaTime;
+            if(roundType == ROUNDTYPE.NORMAL){
+                spawnTime += Time.deltaTime;
+                roundTime += Time.deltaTime;
+            }
+            else if(roundType == ROUNDTYPE.BOSS){
+                if(EnemyBossCheck == null){
+                    roundType = ROUNDTYPE.NORMAL;
+                    roundIndex  += 1;
+                    if(EnemyBossObj.Length < roundIndex){
+                        roundIndex = EnemyBossObj.Length;
+                    }
+                }
+            }
+
+            if(roundEndTime <= roundTime){
+                int SpawntransformCount = spawntransform.Length;
+                int RandSpawntransformNumer = Random.Range(0, SpawntransformCount);
+                GameObject temp = (GameObject)Instantiate(EnemyBossObj[roundIndex - 1], spawntransform[RandSpawntransformNumer].position, Quaternion.identity);
+                EnemyBossCheck = temp;
+                roundTime = 0.0f;
+                roundType = ROUNDTYPE.BOSS;
+            }
+
             if(nextspawnTime <= spawnTime)
             {
                 spawnTime = 0.0f;
-                nextspawnTime = Random.Range(0.5f, 2.0f);   //·£´ýÀ¸·Î ´ÙÀ½ ½ºÆù ½Ã°£À» ¼³Á¤ÇÑ´Ù. 
+                nextspawnTime = Random.Range(0.5f, 2.0f);   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. 
 
-                int EnemyObjectsCount = EnemyObjects.Length;            //µî·ÏÇÑ Àû °³Ã¼ÀÇ ¼ýÀÚ¸¦ °¡Á®¿Â´Ù.
-                int SpawntransformCount = spawntransform.Length;        //µî·ÏÇÑ ½ºÆù Æ÷ÀÎÆ®ÀÇ °¹¼ö¸¦ °¡Á®¿Â´Ù.
+                int EnemyObjectsCount = EnemyObjects.Length;            //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
+                int SpawntransformCount = spawntransform.Length;        //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
 
-                int RandEnemyObjectNumer = Random.Range(0, EnemyObjectsCount);      //°¡Á®¿Â ¼ýÀÚ¸¦ ÃÖ´ë·Î ³õ°í ·£´ý ¼ýÀÚ¸¦ »ý¼º 
-                int RandSpawntransformNumer = Random.Range(0, SpawntransformCount); //°¡Á®¿Â ¼ýÀÚ¸¦ ÃÖ´ë·Î ³õ°í ·£´ý ¼ýÀÚ¸¦ »ý¼º 
+                int RandEnemyObjectNumer = Random.Range(0, EnemyObjectsCount);      //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ö´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+                int RandSpawntransformNumer = Random.Range(0, SpawntransformCount); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ö´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 
-                //ÇØ´ç ·£´ý ¼ýÀÚ¸¦ ±â¹ÝÀ¸·Î µî·ÏµÈ ¸ó½ºÅÍ ¹è¿­ ¹øÈ£¿Í ½ºÆù Æ÷ÀÎÆ® ¹øÈ£¿¡ À§Ä¡¿¡ ÀûÀ» »ý¼º ½ÃÅ²´Ù. 
+                //ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ïµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å²ï¿½ï¿½. 
                 GameObject temp = (GameObject)Instantiate(
                     EnemyObjects[RandEnemyObjectNumer] , spawntransform[RandSpawntransformNumer].position , Quaternion.identity);
 
             }
 
 
-            if (player.transform.position.y < -50.0f)        //position ÀÇ y °ªÀ» Á¶È¸´Â °¡´É Á÷Á¢ ÀÔ·Â ºÒ°¡ (Vector3·Î¸¸ µ¥ÀÌÅÍ ÀÔ·Â °¡´É)
+            if (player.transform.position.y < -50.0f)        //position ï¿½ï¿½ y ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Ò°ï¿½ (Vector3ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½)
             {
                 player.transform.position = Vector3.zero + new Vector3(0.0f, 1.0f, 0.0f);   //Vector3.zero => new Vector3(0.0f,0.0f,0.0f)
                 player.transform.rotation = Quaternion.identity;    //Quaternion.identity => new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);

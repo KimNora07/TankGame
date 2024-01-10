@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileMove : MonoBehaviour         //�Ѿ� Ŭ���� ����
+public class Projectile_Ulti : MonoBehaviour
 {
     public enum PROJECTILETYPE : int                //ENUM ������ �Ѿ��� ���� ������ ����
     {
@@ -28,7 +28,7 @@ public class ProjectileMove : MonoBehaviour         //�Ѿ� Ŭ���� �
             Vector3 point = other.ClosestPoint(transform.position);     //�浹�� �Ͼ ����Ʈ 
             GameObject tempVFX = (GameObject)Instantiate(VFX_Fire_B, point ,Quaternion.identity);   //�浹�� �Ͼ ����Ʈ�� ����Ʈ �߰�
 
-            other.gameObject.GetComponent<EnemyController>().currentHP -= GameManager.Instance.playerPower;
+            other.gameObject.GetComponent<EnemyController>().currentHP -= damage;
 
             if(other.gameObject.GetComponent<EnemyController>().currentHP <= 0)
             {
@@ -58,7 +58,8 @@ public class ProjectileMove : MonoBehaviour         //�Ѿ� Ŭ���� �
     void Update()
     {
         if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
-        transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);  //�Ѿ��� Z�� �չ������� �̵��ϰ� 
+
+        transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed); 
 
         lifeTime -= Time.deltaTime;                                         //�ʸ� �����Ͽ� �ð� Ȯ��
         if (lifeTime < 0.0f)
