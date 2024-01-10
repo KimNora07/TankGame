@@ -1,40 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameManager;
 
 public class PlayerController : MonoBehaviour
-{
+{    
     public GameObject pivot;
-    public Camera viewCamera;           //ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ Camera ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
-    public Vector3 velocity;            //ï¿½Ìµï¿½ ï¿½ï¿½
-    public Rigidbody body;              //ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½. 
-
+    public Camera viewCamera;           //¸ÞÀÎ Ä«¸Þ¶ó¸¦ ¹Þ¾Æ¿À´Â Camera ¿ÀºêÁ§Æ®
+    public Vector3 velocity;            //ÀÌµ¿ °ª
+    public Rigidbody body;              //¹°¸® È¿°ú¸¦ ÁÖ´Â °­Ã¼ °ªÀ» °¡Á®¿Â´Ù. 
+    
     void Start()
     {
+        
 
-        viewCamera = Camera.main;           //ï¿½ï¿½Æ®ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ÛµÉ¶ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Þ¾Æ¿Â´ï¿½.
+        viewCamera = Camera.main;           //½ºÆ®¸³Æ®°¡ ½ÃÀÛµÉ¶§ Ä«¸Þ¶ó¸¦ ¹Þ¾Æ¿Â´Ù.
     }    
     void Update()
     {
-        if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
+        if (GameManager.Instance.gameStation != GAMESTATION.PLAY) return;
 
-        //ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½Í°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. 
+        //¹æÇâÅ°¸¦ ÅëÇØ¼­ ÀÌµ¿ º¤ÅÍ°ªÀ» »ý¼ºÇÑ´Ù. 
         velocity = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized * GameManager.Instance.moveSpeed;
 
-        //È­ï¿½é¿¡ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ 3D ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ø¼ï¿½ Vector3ï¿½ï¿½ ï¿½Ö´Â´ï¿½. 
+        //È­¸é¿¡¼­ -> °ÔÀÓ 3D °ø°£ ÁÂÇ¥¸¦ º¯È¯ÇØ¼­ Vector3¿¡ ³Ö´Â´Ù. 
         Vector3 mousePos = viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, viewCamera.transform.position.y));
 
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½â¶§ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ yï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½. 
+        //°ø°£ÁÂÇ¥°¡ Ä³¸¯ÅÍº¸´Ù À§¿¡ ÀÖÀ» °æ¿ì À§¸¦ Ã³´Ù º¸±â¶§¹®¿¡ °°Àº yÃà °ªÀ» ¸ÂÃçÁØ´Ù. 
         Vector3 targetPosition = new Vector3(mousePos.x, pivot.transform.position.y,mousePos.z);
 
-        //ï¿½Çºï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸°ï¿½ ï¿½Ñ´ï¿½. 
+        //ÇÇº¿ÀÌ ÇØ´ç Å¸°ÙÀ» ¹Ù¶óº¸°Ô ÇÑ´Ù. 
         pivot.transform.LookAt(targetPosition, Vector3.up);
     }
     private void FixedUpdate()
     {
-        if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
-        
+        if (GameManager.Instance.gameStation != GAMESTATION.PLAY) return;
+
         body.MovePosition(body.position + velocity * Time.fixedDeltaTime);
     }
 
@@ -42,20 +44,20 @@ public class PlayerController : MonoBehaviour
     {        
         if (other.gameObject.tag == "ITEM")
         {     
-            //Trigger ï¿½ï¿½ï¿½ï¿½ Itemï¿½ï¿½ Box_HP ï¿½ï¿½ ï¿½ï¿½ï¿½ 
+            //Trigger µé¾î¿Â ItemÀÌ Box_HP ÀÏ °æ¿ì 
             if(other.gameObject.GetComponent<ItemController>().itemtype == ItemController.ITEMTYPE.HP_ITEM)
             {
-                GameManager.Instance.currentHp += other.gameObject.GetComponent<ItemController>().amount;        //ï¿½ï¿½ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½(amount)ï¿½ï¿½ Hpï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. 
-                if(GameManager.Instance.currentHp > GameManager.Instance.maxHp)   //ï¿½Ö´ï¿½ HP ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 
+                GameManager.Instance.currentHp += other.gameObject.GetComponent<ItemController>().amount;        //¾ÆÀÌÅÛ¿¡ ÀÖ´Â °ª(amount)À» Hp¿¡ ´õÇÑ´Ù. 
+                if(GameManager.Instance.currentHp > GameManager.Instance.maxHp)   //ÃÖ´ë HP º¸´Ù ³ô¾ÆÁú °æ¿ì 
                 {
-                    GameManager.Instance.currentHp = GameManager.Instance.maxHp;  //ï¿½Ö´ï¿½ Hpï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½. 
+                    GameManager.Instance.currentHp = GameManager.Instance.maxHp;  //ÃÖ´ë Hp·Î ¸¸µç´Ù. 
                 }
             }
 
-            //Trigger ï¿½ï¿½ï¿½ï¿½ Itemï¿½ï¿½ Box_Exp ï¿½ï¿½ ï¿½ï¿½ï¿½ 
+            //Trigger µé¾î¿Â ItemÀÌ Box_Exp ÀÏ °æ¿ì 
             if (other.gameObject.GetComponent<ItemController>().itemtype == ItemController.ITEMTYPE.EXP_ITEM)
             {
-                GameManager.Instance.ExpUp(other.gameObject.GetComponent<ItemController>().amount);        //ï¿½ï¿½ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½(amount)ï¿½ï¿½ Expï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. 
+                GameManager.Instance.ExpUp(other.gameObject.GetComponent<ItemController>().amount);        //¾ÆÀÌÅÛ¿¡ ÀÖ´Â °ª(amount)À» Exp¿¡ ´õÇÑ´Ù. 
             }
 
             Destroy(other.gameObject);

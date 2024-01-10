@@ -2,24 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleTon : MonoBehaviour
+public class Singleton : MonoBehaviour
 {
-    public static SingleTon Instance{ get; private set; }  // staticì„ ì‚¬ìš©í•´ì„œ Instance ë“±ë¡
-    // Start is called before the first frame update
-    void Awake()
+    public static Singleton Instance {  get; private set; }         //staticÀ» »ç¿ëÇØ¼­ Instance µî·Ï 
+    private void Awake()
     {
-        if(Instance == null){
-            Instance = this;                // thisëŠ” ìì‹ ì˜ classë¥¼ return í•œë‹¤
-            DontDestroyOnLoad(gameObject);  // MonoBehaviour ë™ì‘ì„ ìœ„í•´ GameObjectì— ì†ŒìŠ¤ë¥¼ ë„£ê³  íŒŒê´´ ë˜ì§€ ì•Šê²Œ í•˜ê¸° ìœ„í•´ ì„ ì–¸
-                                            // DontDestroyOnLoad í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ì—¬ ì˜¤ë¸Œì íŠ¸ê°€ íŒŒê´´ ë˜ì§€ ì•Šê²Œ í•œë‹¤.
+        if(Instance == null)                    //Instance°¡ Null °ªÀÏ °æ¿ì¿¡
+        {
+            Instance = this;                    //this´Â ÀÚ½ÅÀÇ class¸¦ return ÇÑ´Ù. 
+            DontDestroyOnLoad(gameObject);      //MonoBehaviour µ¿ÀÛÀ» À§ÇØ GameObject¿¡ ¼Ò½º¸¦ ³Ö°í ÆÄ±« µÇÁö ¾Ê°Ô ÇÏ±â À§ÇØ¼±¾ğ 
+                                                //DontDestoryOnLoad ÇÔ¼ö¸¦ »ç¿ëÇÏ¿© ¿ÀºêÁ§Æ®°¡ ÆÄ±« µÇÁö ¾Ê°Ô ÇÑ´Ù. 
         }
-        else{
-            Destroy(gameObject);            // ë§Œì•½ ê°™ì€ ì‹±ê¸€í†¤ í´ë˜ìŠ¤ê°€ ì¸ìŠ¤í„´ìŠ¤ ë˜ì–´ìˆìœ¼ë©´ í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ë¥¼ íŒŒê´´ í•œë‹¤.
+        else
+        {
+            Destroy(gameObject);                //¸¸¾à °°Àº ½Ì±ÛÅæ Å¬·¡½º°¡ ÀÎ½ºÅÏ½º µÇ¾îÀÖÀ¸¸é ÇØ´ç ¿ÀºêÁ§Æ®¸¦ ÆÄ±« ÇÑ´Ù. 
         }
     }
-
     public int playerScore = 0;
-    public void AddScore(int amount){
+    public void AddScore(int amount)
+    {
         playerScore += amount;
     }
 }

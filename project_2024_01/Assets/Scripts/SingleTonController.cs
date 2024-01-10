@@ -1,15 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleTonController : MonoBehaviour
+public class SingletonController : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        SingleTon.Instance.AddScore(10);  // ì‹±ê¸€í†¤ í´ë˜ìŠ¤ Instanceì— ì ‘ê·¼í•˜ì—¬ í•¨ìˆ˜ í˜¸ì¶œ
-        G_SingleTon.Instance.AddScore(10);
+        Singleton.Instance.AddScore(10);                //½Ì±ÛÅæ Å¬·¡½º Instance¿¡ Á¢±ÙÇÏ¿© ÇÔ¼ö È£Ãâ 
+        GenSingleton.Instance.AddScore(10);
     }
 
     // Update is called once per frame

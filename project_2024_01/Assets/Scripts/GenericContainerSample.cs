@@ -1,44 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GenericContainerSample : MonoBehaviour
 {
-    private GenericContainer<int> intContainer;        // ì œë„ˆë¦­ intë¡œ ì„ ì–¸
-    private GenericContainer<string> stringContainer;  // ì œë„ˆë¦­ stringìœ¼ë¡œ ì„ ì–¸
-    // Start is called before the first frame update   // ë˜í•œ ì»¤ìŠ¤í…€ í´ë˜ìŠ¤ë¡œ ì„ ì–¸í•´ì„œ ì‚¬ìš© ê°€ëŠ¥
+    private GenericContainer<int> intContainer;             //Á¦³Ê¸¯ int ·Î ¼±¾ğ
+    private GenericContainer<string> stringContainer;       //Á¦³Ê¸¯ string ·Î ¼±¾ğ
+    //private GenericContainer<PlayerController> PlayerControllerContainer;     //³ªÁß¿¡ Ä¿½ºÅÒ Å¬·¡½º·Î ¼±¾ğÇØ¼­ »ç¿ë °¡´É
     void Start()
     {
         intContainer = new GenericContainer<int>(5);
         stringContainer = new GenericContainer<string>(10);
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1)){         // 1ë²ˆ ë²„íŠ¼ì„ ëˆŒë €ì„ ê²½ìš°
-            intContainer.Add(Random.Range(0, 100));   // 0 ~ 99 ê¹Œì§€  ëœë¤ ìˆ«ìë¥¼ ë„£ëŠ”ë‹¤.
+        if(Input.GetKeyDown(KeyCode.Alpha1))        //1¹ø ¹öÆ°À» ´­·¶À» ‹š
+        {
+            intContainer.Add(Random.Range(0, 100));     // 0 ~ 99 ±îÁö ·£´ı ¼ıÀÚ¸¦ ³Ö´Â´Ù. 
             DisplayContainerItems(intContainer);
         }
-        if(Input.GetKeyDown(KeyCode.Alpha2)){
-            string randomString = "Item " + Random.Range(0, 100);  // 0 ~ 99 ê¹Œì§€ ëœë¤ ìˆ«ìë¥¼ ë„£ëŠ”ë‹¤. ì˜ˆ) Item 0
-            stringContainer.Add(randomString);
+        if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            string randomString = "item " + Random.Range(0, 100); // 0 ~ 99 ±îÁö ·£´ı ¼ıÀÚ¸¦ ³Ö´Â´Ù. ex) item 0
+            stringContainer.Add(randomString);    
             DisplayContainerItems(stringContainer);
         }
     }
-
-    private void DisplayContainerItems<T>(GenericContainer<T> container){  // ì œë„ˆë¦­ìœ¼ë¡œ ë§Œë“  ë°°ì—´ì„ ë³´ì—¬ì£¼ëŠ” í•¨ìˆ˜
-        T[] Items = container.GetItems();              // ì¸ìˆ˜ë¡œ ë“¤ì–´ì˜¨ Items ì œë„ˆë¦­ ë°°ì—´ì„ í•¨ìˆ˜ë¡œ í†µí•´ ê°€ì ¸ì˜¨ë‹¤
-        string temp = "";                              // ì„ì‹œë¡œ ì‚¬ìš©í•  stringì„ ì„ ì–¸
- 
-        for(int i = 0; i < Items.Length; i++){         // ë°°ì—´ì˜ ê¸¸ì´ë§Œí¼ forë¬¸ì„ ëˆë‹¤
-            if(Items[i] != null){                      // ë°°ì—´ì— ë°ì´í„°ê°€ ìˆì„ê²½ìš° stringìœ¼ë¡œ ë³€í™˜
-                temp += Items[i].ToString() + " - ";  
-            }
-            else{                                      // ë°°ì—´ì— ë°ì´í„°ê°€ ì—†ì„ê²½ìš° Emptyë¬¸ìì—´ë¡œ ë³€í™˜
-                temp += "Empty - ";
-            }
+    private void DisplayContainerItems<T>(GenericContainer<T> container)    //Á¦³Ê¸¯À¸·Î ¸¸µç ¹è¿­À» º¸¿©ÁÖ´Â ÇÔ¼ö ±¸Çö 
+    {
+        T[] items = container.GetItems();                                   //ÀÎ¼ö·Î µé¾î¿Â items Á¦³Ê¸¯ ¹è¿­À» ÇÔ¼ö·Î ÅëÇØ °¡Àú¿Â´Ù.
+        string temp = "";                                                   //ÀÓ½Ã·Î »ç¿ëÇÒ stringÀ» ¼±¾ğ 
+        for(int i = 0; i < items.Length; i++)                               //¹è¿­ÀÇ ±æÀÌ ¸¸Å­ for¹®À» µ·´Ù. 
+        {
+            if (items[i] != null) temp += items[i].ToString() + " - ";      //¹è¿­¿¡ µ¥ÀÌÅÍ°¡ ÀÖÀ»°æ¿ì string ·Î º¯È¯
+            else temp += "Empty - ";                                        //¹è¿­¿¡ µ¥ÀÌÅÍ°¡ ¾øÀ»°æ¿ì Empty ¹®ÀÚ¿­·Î º¯È¯ 
         }
         Debug.Log(temp);
     }

@@ -4,93 +4,99 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;  // Í∞ÑÎã®Ìïú Ïã±Í∏ÄÌÜ§ Ìôî
+    public static GameManager Instance;                 //∞£¥‹«— ΩÃ±€≈Ê »≠
 
-    public enum GAMESTATION : int{
+    public enum GAMESTATION : int
+    {
         READY,
         PLAY = 10,
         STOP,
-        LEVELUP = 20,
+        LEVELUPUI = 20,
         END = 30
     }
 
-    // ÌîåÎ†àÏù¥Ïñ¥ Îç∞Ïù¥ÌÑ∞
+    //«√∑π¿ÃæÓ µ•¿Ã≈Õ     
     public int currentHp = 100;
     public int level = 1;
-    public int[] levelExp = new int[30];  // 30Î†ô ÍπåÏßÄ ÏÑ§Ï†ï
+    public int[] levelUpExp = new int[30];                //30∑π∫ß ±Ó¡ˆ º≥¡§ 
     public int currentExp = 0;
 
-    // ÌîåÎ†àÏù¥Ïñ¥ ÏóÖÍ∑∏Î†àÏù¥Îìú ÏöîÏÜå
+    //«√∑π¿ÃæÓ æ˜±◊∑π¿ÃµÂ ø‰º“
     public int maxHp = 100;
     public float moveSpeed = 10.0f;
     public float fireSpeed = 4.0f;
     public int playerPower = 1;
 
     public GAMESTATION gameStation = GAMESTATION.READY;
-    // Start is called before the first frame update
-    void Awake()
+
+    private void Awake()
     {
         Instance = this;
     }
 
-    public void HpLevelUp(){
-        maxHp += 10;
-        GameUIManager.Instance.levelUpPanel_OnOFF(false);
-        gameStation = GAMESTATION.PLAY;
-    }
-    public void MoveSpeedUp(){
-        moveSpeed += 0.1f;
-        GameUIManager.Instance.levelUpPanel_OnOFF(false);
-        gameStation = GAMESTATION.PLAY;
-    }
-    public void FireSpeedUp(){
-        fireSpeed += 0.5f;
-        GameUIManager.Instance.levelUpPanel_OnOFF(false);
-        gameStation = GAMESTATION.PLAY;
-    }
-    public void PowerLevelUp(){
-        playerPower += 1;
-        GameUIManager.Instance.levelUpPanel_OnOFF(false);
-        gameStation = GAMESTATION.PLAY;
-    }
-
-    public void Start(){
-        GameUIManager.Instance.levelUpPanel_OnOFF(false);
-    }
-
-    // Update is called once per frame
-    void Update()
+    public void HpLevelUp()
     {
-        
-    }
-
-    public void GamePlay(){
+        maxHp += 10;
+        GameUIManager.Instance.levelUpPanel_OnOff(false);
         gameStation = GAMESTATION.PLAY;
     }
-    public void GamePlayStop(){
+    public void moveSpeedLevelUp()
+    {
+        moveSpeed += 0.1f;
+        GameUIManager.Instance.levelUpPanel_OnOff(false);
+        gameStation = GAMESTATION.PLAY;
+    }
+    public void fireSpeedLevelUp()
+    {
+        fireSpeed += 0.5f;
+        GameUIManager.Instance.levelUpPanel_OnOff(false);
+        gameStation = GAMESTATION.PLAY;
+    }
+    public void PowerLevelUp()
+    {
+        playerPower += 1;
+        GameUIManager.Instance.levelUpPanel_OnOff(false);
+        gameStation = GAMESTATION.PLAY;
+    }
+
+
+    public void Start()
+    {
+        GameUIManager.Instance.levelUpPanel_OnOff(false);       //Ω√¿€Ω√ LevelUp ∆–≥Œ¿ª Off Ω√≈≤¥Ÿ.
+    }
+
+    public void GamePlay()                          //∞‘¿” «√∑π¿Ã ªÛ≈¬∑Œ ¿¸»Ø
+    {
+        gameStation = GAMESTATION.PLAY;
+    }
+    public void GamePlayStop()                      //∞‘¿” ∏ÿ√„ ªÛ≈¬∑Œ ¿¸»Ø
+    {
         gameStation = GAMESTATION.STOP;
     }
-    public void GamePlayLevelUp(){
-        gameStation = GAMESTATION.LEVELUP;
+    public void GamePlayLevelUp()                   //∞‘¿” ∑π∫ß æ˜ ªÛ≈¬∑Œ ¿¸»Ø
+    {
+        gameStation = GAMESTATION.LEVELUPUI;
     }
+    public void ExpUp(int amount)
+    {
+        if (level == levelUpExp.Length) return;     //√÷¥Î ∑π∫ßø° µµ¥ﬁ «ﬂ¿ª ∞ÊøÏ ±◊≥… ∏Æ≈œ 
 
-    public void ExpUp(int amount){
-        if(level == levelExp.Length) return;  // ÏµúÎåÄ Î†àÎ≤®Ïóê ÎèÑÎã¨ ÌñàÏùÑ Í≤ΩÏö∞ Í∑∏ÎÉ• Î¶¨ÌÑ¥
-
-        currentExp += amount;                 // Í≤ΩÌóòÏπòÎ•º Ïò¨Î†§Ï§ÄÎã§.
-        LevelUpCheck();
+        currentExp += amount;                       //∞Ê«Ëƒ°∏¶ Up Ω√≈≤¥Ÿ.
+        LevelUpCheck();                             //∑π∫ß æ˜ √º≈©∏¶ «—¥Ÿ.
     }
+    public void LevelUpCheck()                      //∑π∫ß æ˜ √º≈© «‘ºˆ
+    {
+        if(currentExp >= levelUpExp[level - 1])     //±‚¡∏ ∞Ê«Ëƒ°∞° « ø‰ ∞Ê«Ëƒ°∫∏¥Ÿ ≈¨ ∞ÊøÏ
+        {
+            currentExp -= levelUpExp[level - 1];    //∑π∫ßæ˜ø° ¥Î«— ∞Ê«Ëƒ°∏¶ ª´ ¿Ã»ƒ
+            level += 1;                             //∑π∫ß æ˜¿ª Ω√ƒ—¡ÿ¥Ÿ. 
 
-    public void LevelUpCheck(){
-        if(currentExp >= levelExp[level - 1]){
-            currentExp -= levelExp[level - 1];
-            level += 1;
-
-            if(level >= levelExp.Length){
-                level = levelExp.Length;
+            if(level >= levelUpExp.Length)          //√÷¥Î ∑π∫ß ¿ÃªÛ æ»ø√∂Û∞°∞‘ ∏∑æ∆¡‡º≠ ø°∑Ø∏¶ «««—¥Ÿ. 
+            {
+                level = levelUpExp.Length;
             }
-            GameUIManager.Instance.levelUpPanel_OnOFF(true);
-            gameStation = GAMESTATION.LEVELUP;
-        } 
+            GameUIManager.Instance.levelUpPanel_OnOff(true);
+            gameStation = GAMESTATION.LEVELUPUI;
+        }
     }
 }

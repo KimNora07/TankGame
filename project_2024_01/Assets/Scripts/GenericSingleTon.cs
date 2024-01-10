@@ -2,30 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenericSingleTon<T> : MonoBehaviour where T : Component
+public class GenericSingleton<T> : MonoBehaviour where T : Component
 {
-    private static T _instance;  // ì œë„ˆë¦­í•œ ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
+    private static T _instance;              //Á¦³Ê¸¯ÇÑ ÀÎ½ºÅÏ½º »ı¼º 
 
-    public static T Instance{
-        get{
-            if(_instance == null){                      // ì¸ìŠ¤í„´ìŠ¤ê°€ ì—†ëŠ” ê²½ìš°
-                _instance = FindObjectOfType<T>();      // Tí´ë˜ìŠ¤ ì˜¤ë¸Œì íŠ¸ íƒ€ì…ìœ¼ë¡œ ì°¾ê³ 
-                if(_instance == null){                  // NULL ê°’ì¸ ê²½ìš°
-                    GameObject obj = new GameObject();  // ê²Œì„ ì˜¤ë¸Œì íŠ¸ë¥¼ ìƒì„±í•œ í›„
-                    obj.name = typeof(T).Name;          // ì˜¤ë¸Œì íŠ¸ì˜ ì´ë¦„ì„ ì„¤ì • í›„
-                    _instance = obj.AddComponent<T>();  // Component classë¥¼ ë¶™ì¸ë‹¤.
+    public static T Instance
+    {
+        get
+        {
+            if(_instance == null)                       //ÀÎ½ºÅÏ½º°¡ ¾øÀ» °æ¿ì
+            {
+                _instance = FindObjectOfType<T>();        //TÅ¬·¡½º¸¦ ¿ÀºêÁ§Æ® Å¸ÀÔÀ¸·Î Ã£°í
+                if(_instance == null)                     //NUll °ªÀÎ °æ¿ì
+                {
+                    GameObject obj = new GameObject();    //°ÔÀÓ ¿ÀºêÁ§Æ®¸¦ »ı¼ºÇÑ ÈÄ
+                    obj.name = typeof(T).Name;            //¿ÀºêÁ§Æ® ÀÌ¸§ ¼³Á¤ ÈÄ
+                    _instance = obj.AddComponent<T>();    //Component class¸¦ ºÙÀÎ´Ù. 
                 }
             }
             return _instance;
         }
     }
-
-    public virtual void Awake(){  // virtual ê°€ìƒ í•¨ìˆ˜ë¡œ Awake
-        if(_instance == null){
+    public virtual void Awake()     //virtual °¡»ó ÇÔ¼ö·Î Awake
+    {
+        if( _instance == null)
+        {
             _instance = this as T;
             DontDestroyOnLoad(gameObject);
         }
-        else if(_instance != this){
+        else if( _instance != this ) 
+        {
             Destroy(gameObject);
         }
     }

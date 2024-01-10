@@ -1,22 +1,23 @@
-
+using System.Collections.Generic;
 public class GenericContainer<T>
 {
-    private T[] Items;              // ì œë„ˆë¦­ ë°°ì—´ ìƒì„±
-    //private List<> itemList;   
-    private int currentIndex = 0;   // ë°°ì—´ Index ì„ ì–¸
-
-    public GenericContainer(int capacity){  // ìƒì„±ì´ ë  ë•Œ ìˆ«ìë¥¼ ë°›ì•„ì™€ì„œ ë°°ì—´ ê°¯ìˆ˜ë¥¼ ë§Œë“ ë‹¤.
-        Items = new T[capacity];
+    private T[] items;                      //Á¦³Ê¸¯ ¹è¿­ »ı¼º
+    //private List<T> itemList;
+    private int curretIndex = 0;            //¹è¿­ Index ¼±¾ğ
+    public GenericContainer(int capacity)       //»ı¼ºÀÌ µÉ ¶§ ¼ıÀÚ¸¦ ¹Ş¾Æ¿Í¼­ ¹è¿­ °¹¼ö¸¦ ¸¸µç´Ù. 
+    {
+        items = new T[capacity];
     }
-
-    public void Add(T Item){                // ë°°ì—´ì— ë°ì´í„°ë¥¼ ë„£ëŠ” í•¨ìˆ˜
-        if(currentIndex < Items.Length){    // ë°°ì—´ì˜ ê¸¸ì´ë¥¼ ê²€ì‚¬
-            Items[currentIndex] = Item;     // ë°°ì—´ì˜ indexì— ë§ê²Œ ë°°ì—´ì— ë„£ëŠ”ë‹¤.
-            currentIndex++;
+    public void Add(T item)                 //¹è¿­¿¡ µ¥ÀÌÅÍ¸¦ ³Ö´Â ÇÔ¼ö 
+    {
+        if(curretIndex < items.Length)      //¹è¿­ÀÇ ±æÀÌ¸¦ °Ë»ç
+        {
+            items[curretIndex] = item;      //¹è¿­ÀÇ index¿¡ ¸Â°Ô ¹è¿­¿¡ ³Ö´Â´Ù. 
+            curretIndex++;
         }
     }
-
-    public T[] GetItems(){
-        return Items;
+    public T[] GetItems()
+    {
+        return items;
     }
 }

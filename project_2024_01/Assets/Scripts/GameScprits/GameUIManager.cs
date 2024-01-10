@@ -1,39 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameUIManager : MonoBehaviour
 {
-    public static GameUIManager Instance;  // ê°„ë‹¨í•œ ì‹±ê¸€í†¤ í™”
+    public static GameUIManager Instance;                 //°£´ÜÇÑ ½Ì±ÛÅæ È­
 
-    public Slider slider_Player_Hp_Bar;
-    public Slider slider_Player_Exp_Bar;
-    public TMP_Text tmptext_Player_Hp;
-    public TMP_Text tmptext_Player_Exp;
-    public TMP_Text tmptext_Player_Level;
-    
-    public GameObject levelUpPanel;
-    // Start is called before the first frame update
-    void Awake()
+    public Slider silderUI_Player_Hp_Bar;           //HP ½½¶óÀÌ´õ
+    public Slider silderUI_Player_Exp_Bar;          //EXP ½½¶óÀÌ´õ
+    public TMP_Text tmptextUI_Player_Hp;            //HP Ç¥½Ã
+    public TMP_Text tmptextUI_Player_Exp;           //EXP Ç¥½Ã
+    public TMP_Text tmptextUI_Player_Level;
+
+    public GameObject levelUpPanel;                 //LevelUp ÆĞ³ÎÀ» °ü¸®
+    private void Awake()
     {
         Instance = this;
     }
-
-    // Update is called once per frame
-    void Update()
+    public void levelUpPanel_OnOff(bool temp)           //LevelUp ÆĞ³Î OnOff ÇÔ¼ö Á¦ÀÛ 
     {
-        slider_Player_Hp_Bar.value = (float)GameManager.Instance.currentHp / 
-                                     (float)GameManager.Instance.maxHp;
-        slider_Player_Exp_Bar.value = (float)GameManager.Instance.currentExp / 
-                                      (float)GameManager.Instance.levelExp[GameManager.Instance.level - 1];  // levelì€ 1ë¶€í„° ì‹œì‘í•˜ê¸° ë•Œë¬¸ì— -1ì„ í•œë‹¤
-        tmptext_Player_Hp.text = "Hp : " + GameManager.Instance.currentHp.ToString();
-        tmptext_Player_Exp.text = "Exp : " + GameManager.Instance.currentExp.ToString();
-        tmptext_Player_Level.text = "Level : " + GameManager.Instance.level.ToString();
-    }
-
-    public void levelUpPanel_OnOFF(bool temp){
         levelUpPanel.SetActive(temp);
     }
+
+    void Update()
+    {
+        tmptextUI_Player_Hp.text = GameManager.Instance.currentHp.ToString();
+        tmptextUI_Player_Exp.text = GameManager.Instance.currentExp.ToString();
+        tmptextUI_Player_Level.text = "LEVEL : " + GameManager.Instance.level.ToString();
+
+        silderUI_Player_Hp_Bar.value = (float)GameManager.Instance.currentHp/(float)GameManager.Instance.maxHp;
+        silderUI_Player_Exp_Bar.value = (float)GameManager.Instance.currentExp / 
+            (float)GameManager.Instance.levelUpExp[GameManager.Instance.level - 1];     //Level Àº 1ºÎÅÍ ½ÃÀÛÇÏ±â ¶§¹®¿¡ -1¸¦ ÇØÁØ´Ù.
+
+    }
+
 }

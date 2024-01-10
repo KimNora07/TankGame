@@ -1,79 +1,92 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static GameManager;
 
 public class SystemManager : MonoBehaviour
 {
-    public enum ROUNDTYPE : int{
+    public enum ROUNDTYPE : int
+    {
         NORMAL,
         BOSS
     }
 
-    public ROUNDTYPE roundType = ROUNDTYPE.NORMAL;
+    public ROUNDTYPE roundtype = ROUNDTYPE.NORMAL;      //¶ó¿îµå Å¸ÀÔÀ» ¼³Á¤
 
-    public int roundIndex = 1;
-    public float roundTime = 0.0f;
-    public float roundEndTime = 30.0f;
+    public int roundindex = 1;                  //¶ó¿îµå ¼ø¼­
+    public float roundTime = 0.0f;              //¶ó¿îµå ½Ã°£ Å¸ÀÔ
+    public float roundEndTime = 30.0f;          //¶ó¿îµå ³¡ ½Ã°£
 
-    public float spawnTime = 0.0f;
-    public float nextspawnTime = 2.0f;
+    public float spawnTime = 0.0f;              //½ºÆù ½Ã°£ 
+    public float nextspawnTime = 2.0f;          //´ÙÀ½ ½ºÆù ½Ã°£ ¼³Á¤
 
-    public GameObject[] EnemyObjects;
-    public GameObject[] EnemyBossObj;
-    public Transform[] spawntransform;
-    public GameObject EnemyBossCheck;
+    public GameObject[] EnemyBossObjects;       //º¸½º ¿ÀºêÁ§Æ®
+    public GameObject[] EnemyObjects;           //Àû ¿ÀºêÁ§Æ® ¹è¿­
+    public Transform[] spawntransform;          //½ºÆù À§Ä¡ ¿ÀºêÁ§Æ® ¹è¿­
 
-    public GameObject player;
+    public GameObject EnemyBossCheck;           //º¸½º Ã¼Å©¿ë
+
+    public GameObject player;                   //ÇÃ·¹ÀÌ¾î Ã¼Å©¿ë
 
     // Update is called once per frame
     void Update()
-    { 
-        if(GameManager.Instance.gameStation != GameManager.GAMESTATION.PLAY) return;
+    {
+        if (GameManager.Instance.gameStation != GAMESTATION.PLAY) return;
 
         if (player != null)
         {
-            if(roundType == ROUNDTYPE.NORMAL){
+
+            if(roundtype == ROUNDTYPE.NORMAL)       //³ë¸»Type ÀÎ »óÅÂ¿¡¼­¸¸ ½Ã°£ÀÌ Áö³ª°¡°Ô ÇÔ
+            {
                 spawnTime += Time.deltaTime;
                 roundTime += Time.deltaTime;
             }
-            else if(roundType == ROUNDTYPE.BOSS){
-                if(EnemyBossCheck == null){
-                    roundType = ROUNDTYPE.NORMAL;
-                    roundIndex  += 1;
-                    if(EnemyBossObj.Length < roundIndex){
-                        roundIndex = EnemyBossObj.Length;
+            else if (roundtype == ROUNDTYPE.BOSS)
+            {
+                if(EnemyBossCheck == null)
+                {
+                    roundtype = ROUNDTYPE.NORMAL;
+                    roundindex += 1;
+                    if(EnemyBossObjects.Length < roundindex)
+                    {
+                        roundindex = EnemyBossObjects.Length;
                     }
                 }
             }
 
-            if(roundEndTime <= roundTime){
-                int SpawntransformCount = spawntransform.Length;
-                int RandSpawntransformNumer = Random.Range(0, SpawntransformCount);
-                GameObject temp = (GameObject)Instantiate(EnemyBossObj[roundIndex - 1], spawntransform[RandSpawntransformNumer].position, Quaternion.identity);
-                EnemyBossCheck = temp;
-                roundTime = 0.0f;
-                roundType = ROUNDTYPE.BOSS;
+            if (roundEndTime <= roundTime)
+            {
+               
+                int SpawntransformCount = spawntransform.Length;        //µî·ÏÇÑ ½ºÆù Æ÷ÀÎÆ®ÀÇ °¹¼ö¸¦ °¡Á®¿Â´Ù.              
+                int RandSpawntransformNumer = Random.Range(0, SpawntransformCount); //°¡Á®¿Â ¼ýÀÚ¸¦ ÃÖ´ë·Î ³õ°í ·£´ý ¼ýÀÚ¸¦ »ý¼º 
+
+                GameObject temp = (GameObject)Instantiate(
+                    EnemyBossObjects[roundindex - 1], spawntransform[RandSpawntransformNumer].position, Quaternion.identity);
+                EnemyBossCheck = temp;                          //º¸½º Ã¼Å©¿ëÀ¸·Î   
+                roundTime = 0.0f;                               //½Ã°£ ÃÊ±âÈ­
+                roundtype = ROUNDTYPE.BOSS;                     //º¸½º Å¸ÀÔÀ¸·Î º¯°æ
             }
 
-            if(nextspawnTime <= spawnTime)
+            if (nextspawnTime <= spawnTime)
             {
                 spawnTime = 0.0f;
-                nextspawnTime = Random.Range(0.5f, 2.0f);   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. 
+                nextspawnTime = Random.Range(0.5f, 2.0f);   //·£´ýÀ¸·Î ´ÙÀ½ ½ºÆù ½Ã°£À» ¼³Á¤ÇÑ´Ù. 
 
-                int EnemyObjectsCount = EnemyObjects.Length;            //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
-                int SpawntransformCount = spawntransform.Length;        //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
+                int EnemyObjectsCount = EnemyObjects.Length;            //µî·ÏÇÑ Àû °³Ã¼ÀÇ ¼ýÀÚ¸¦ °¡Á®¿Â´Ù.
+                int SpawntransformCount = spawntransform.Length;        //µî·ÏÇÑ ½ºÆù Æ÷ÀÎÆ®ÀÇ °¹¼ö¸¦ °¡Á®¿Â´Ù.
 
-                int RandEnemyObjectNumer = Random.Range(0, EnemyObjectsCount);      //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ö´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ 
-                int RandSpawntransformNumer = Random.Range(0, SpawntransformCount); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ö´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+                int RandEnemyObjectNumer = Random.Range(0, EnemyObjectsCount);      //°¡Á®¿Â ¼ýÀÚ¸¦ ÃÖ´ë·Î ³õ°í ·£´ý ¼ýÀÚ¸¦ »ý¼º 
+                int RandSpawntransformNumer = Random.Range(0, SpawntransformCount); //°¡Á®¿Â ¼ýÀÚ¸¦ ÃÖ´ë·Î ³õ°í ·£´ý ¼ýÀÚ¸¦ »ý¼º 
 
-                //ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ïµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å²ï¿½ï¿½. 
+                //ÇØ´ç ·£´ý ¼ýÀÚ¸¦ ±â¹ÝÀ¸·Î µî·ÏµÈ ¸ó½ºÅÍ ¹è¿­ ¹øÈ£¿Í ½ºÆù Æ÷ÀÎÆ® ¹øÈ£¿¡ À§Ä¡¿¡ ÀûÀ» »ý¼º ½ÃÅ²´Ù. 
                 GameObject temp = (GameObject)Instantiate(
                     EnemyObjects[RandEnemyObjectNumer] , spawntransform[RandSpawntransformNumer].position , Quaternion.identity);
 
             }
 
 
-            if (player.transform.position.y < -50.0f)        //position ï¿½ï¿½ y ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Ò°ï¿½ (Vector3ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½)
+            if (player.transform.position.y < -50.0f)        //position ÀÇ y °ªÀ» Á¶È¸´Â °¡´É Á÷Á¢ ÀÔ·Â ºÒ°¡ (Vector3·Î¸¸ µ¥ÀÌÅÍ ÀÔ·Â °¡´É)
             {
                 player.transform.position = Vector3.zero + new Vector3(0.0f, 1.0f, 0.0f);   //Vector3.zero => new Vector3(0.0f,0.0f,0.0f)
                 player.transform.rotation = Quaternion.identity;    //Quaternion.identity => new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
