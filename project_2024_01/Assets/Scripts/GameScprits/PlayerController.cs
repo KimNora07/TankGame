@@ -4,37 +4,29 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 10.0f;
     public GameObject pivot;
-    public Camera viewCamera;           //¸ÞÀÎ Ä«¸Þ¶ó¸¦ ¹Þ¾Æ¿À´Â Camera ¿ÀºêÁ§Æ®
-    public Vector3 velocity;            //ÀÌµ¿ °ª
-    public Rigidbody body;              //¹°¸® È¿°ú¸¦ ÁÖ´Â °­Ã¼ °ªÀ» °¡Á®¿Â´Ù. 
-
-    public int maxHp;
-    public int currentHp;
-    public int currentExp;
+    public Camera viewCamera;           //ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ Camera ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+    public Vector3 velocity;            //ï¿½Ìµï¿½ ï¿½ï¿½
+    public Rigidbody body;              //ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½. 
 
     void Start()
     {
-        maxHp = 1000;
-        currentHp = 1000;
-        currentExp = 0;
 
-        viewCamera = Camera.main;           //½ºÆ®¸³Æ®°¡ ½ÃÀÛµÉ¶§ Ä«¸Þ¶ó¸¦ ¹Þ¾Æ¿Â´Ù.
+        viewCamera = Camera.main;           //ï¿½ï¿½Æ®ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ÛµÉ¶ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Þ¾Æ¿Â´ï¿½.
     }    
     void Update()
     {
-        //¹æÇâÅ°¸¦ ÅëÇØ¼­ ÀÌµ¿ º¤ÅÍ°ªÀ» »ý¼ºÇÑ´Ù. 
-        velocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * moveSpeed;
+        //ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½Í°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. 
+        velocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * GameManager.Instance.moveSpeed;
 
-        //È­¸é¿¡¼­ -> °ÔÀÓ 3D °ø°£ ÁÂÇ¥¸¦ º¯È¯ÇØ¼­ Vector3¿¡ ³Ö´Â´Ù. 
+        //È­ï¿½é¿¡ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ 3D ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ø¼ï¿½ Vector3ï¿½ï¿½ ï¿½Ö´Â´ï¿½. 
         Vector3 mousePos = viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, viewCamera.transform.position.y));
 
-        //°ø°£ÁÂÇ¥°¡ Ä³¸¯ÅÍº¸´Ù À§¿¡ ÀÖÀ» °æ¿ì À§¸¦ Ã³´Ù º¸±â¶§¹®¿¡ °°Àº yÃà °ªÀ» ¸ÂÃçÁØ´Ù. 
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½â¶§ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ yï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½. 
         Vector3 targetPosition = new Vector3(mousePos.x, pivot.transform.position.y,mousePos.z);
 
-        //ÇÇº¿ÀÌ ÇØ´ç Å¸°ÙÀ» ¹Ù¶óº¸°Ô ÇÑ´Ù. 
+        //ï¿½Çºï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸°ï¿½ ï¿½Ñ´ï¿½. 
         pivot.transform.LookAt(targetPosition, Vector3.up);
     }
     private void FixedUpdate()
@@ -46,20 +38,20 @@ public class PlayerController : MonoBehaviour
     {        
         if (other.gameObject.tag == "ITEM")
         {     
-            //Trigger µé¾î¿Â ItemÀÌ Box_HP ÀÏ °æ¿ì 
+            //Trigger ï¿½ï¿½ï¿½ï¿½ Itemï¿½ï¿½ Box_HP ï¿½ï¿½ ï¿½ï¿½ï¿½ 
             if(other.gameObject.GetComponent<ItemController>().itemtype == ItemController.ITEMTYPE.HP_ITEM)
             {
-                currentHp += other.gameObject.GetComponent<ItemController>().amount;        //¾ÆÀÌÅÛ¿¡ ÀÖ´Â °ª(amount)À» Hp¿¡ ´õÇÑ´Ù. 
-                if(currentHp > maxHp)   //ÃÖ´ë HP º¸´Ù ³ô¾ÆÁú °æ¿ì 
+                GameManager.Instance.currentHp += other.gameObject.GetComponent<ItemController>().amount;        //ï¿½ï¿½ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½(amount)ï¿½ï¿½ Hpï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. 
+                if(GameManager.Instance.currentHp > GameManager.Instance.maxHp)   //ï¿½Ö´ï¿½ HP ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 
                 {
-                    currentHp = maxHp;  //ÃÖ´ë Hp·Î ¸¸µç´Ù. 
+                    GameManager.Instance.currentHp = GameManager.Instance.maxHp;  //ï¿½Ö´ï¿½ Hpï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½. 
                 }
             }
 
-            //Trigger µé¾î¿Â ItemÀÌ Box_Exp ÀÏ °æ¿ì 
+            //Trigger ï¿½ï¿½ï¿½ï¿½ Itemï¿½ï¿½ Box_Exp ï¿½ï¿½ ï¿½ï¿½ï¿½ 
             if (other.gameObject.GetComponent<ItemController>().itemtype == ItemController.ITEMTYPE.EXP_ITEM)
             {
-                currentExp += other.gameObject.GetComponent<ItemController>().amount;        //¾ÆÀÌÅÛ¿¡ ÀÖ´Â °ª(amount)À» Exp¿¡ ´õÇÑ´Ù. 
+                GameManager.Instance.ExpUp(other.gameObject.GetComponent<ItemController>().amount);        //ï¿½ï¿½ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½(amount)ï¿½ï¿½ Expï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. 
             }
 
             Destroy(other.gameObject);

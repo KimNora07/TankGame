@@ -2,53 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileMove : MonoBehaviour         //ÃÑ¾Ë Å¬·¡½º ¼³Á¤
+public class ProjectileMove : MonoBehaviour         //ï¿½Ñ¾ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 {
-    public enum PROJECTILETYPE : int                //ENUM °ªÀ¸·Î ÃÑ¾ËÀ» ´©°¡ ½ú´ÂÁö ¼³Á¤
+    public enum PROJECTILETYPE : int                //ENUM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     {
         PLAYER,
         ENEMY,
     }
 
-    public float lifeTime = 10.0f;              //ÃÑ¾Ë »ý¼º ÈÄ »ì¾ÆÀÖÀ» ½Ã°£ ex) 10ÃÊ 
-    public float moveSpeed = 20.0f;             //ÃÑ¾Ë ¼Óµµ ¼³Á¤
-    public int damage = 1;                      //±âÃÊ µ¥¹ÌÁö ¼³Á¤
+    public float lifeTime = 10.0f;              //ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ex) 10ï¿½ï¿½ 
+    public float moveSpeed = 20.0f;             //ï¿½Ñ¾ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
+    public int damage = 1;                      //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public GameObject VFX_Fire_B;
     public GameObject VFX_WW_Explosion;
 
-    public PROJECTILETYPE projectileType = PROJECTILETYPE.PLAYER;        //µðÆúÆ®´Â ÇÃ·¹ÀÌ¾î 
+    public PROJECTILETYPE projectileType = PROJECTILETYPE.PLAYER;        //ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "ENEMY" && projectileType == PROJECTILETYPE.PLAYER)     //Tag °ªÀÌ EnemyÀÌ°í ÇÃ·¹ÀÌ¾î°¡ ½úÀ»¶§
+        if (other.gameObject.tag == "ENEMY" && projectileType == PROJECTILETYPE.PLAYER)     //Tag ï¿½ï¿½ï¿½ï¿½ Enemyï¿½Ì°ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             Destroy(this.gameObject);
 
-            Vector3 point = other.ClosestPoint(transform.position);     //Ãæµ¹ÀÌ ÀÏ¾î³­ Æ÷ÀÎÆ® 
-            GameObject tempVFX = (GameObject)Instantiate(VFX_Fire_B, point ,Quaternion.identity);   //Ãæµ¹ÀÌ ÀÏ¾î³­ Æ÷ÀÎÆ®¿¡ ÀÌÆåÆ® Ãß°¡
+            Vector3 point = other.ClosestPoint(transform.position);     //ï¿½æµ¹ï¿½ï¿½ ï¿½Ï¾î³­ ï¿½ï¿½ï¿½ï¿½Æ® 
+            GameObject tempVFX = (GameObject)Instantiate(VFX_Fire_B, point ,Quaternion.identity);   //ï¿½æµ¹ï¿½ï¿½ ï¿½Ï¾î³­ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß°ï¿½
 
             other.gameObject.GetComponent<EnemyController>().currentHP -= damage;
 
             if(other.gameObject.GetComponent<EnemyController>().currentHP <= 0)
             {
-                Instantiate(VFX_WW_Explosion, point, Quaternion.identity);   //Àû±ºÀÌ ÆÄ±«µÇ´Â Æ÷ÀÎÆ®¿¡ ÀÌÆåÆ® Ãß°¡
-                other.gameObject.GetComponent<EnemyController>().DropItems();   //Àû±ºÀÌ ÆÄ±«µÇ±â ÀÌÀü¿¡ µå¶ø ¾ÆÀÌÅÛ Ãß°¡ 
+                Instantiate(VFX_WW_Explosion, point, Quaternion.identity);   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä±ï¿½ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß°ï¿½
+                other.gameObject.GetComponent<EnemyController>().DropItems();   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä±ï¿½ï¿½Ç±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ 
                 Destroy(other.gameObject);               
             }
         }
 
-        if (other.gameObject.tag == "Player" && projectileType == PROJECTILETYPE.ENEMY)     //Tag °ªÀÌ EnemyÀÌ°í ÇÃ·¹ÀÌ¾î°¡ ½úÀ»¶§
+        if (other.gameObject.tag == "Player" && projectileType == PROJECTILETYPE.ENEMY)     //Tag ï¿½ï¿½ï¿½ï¿½ Enemyï¿½Ì°ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             Destroy(this.gameObject);
-            Vector3 point = other.ClosestPoint(transform.position);     //Ãæµ¹ÀÌ ÀÏ¾î³­ Æ÷ÀÎÆ® 
-            GameObject tempVFX = (GameObject)Instantiate(VFX_Fire_B, point, Quaternion.identity);   //Ãæµ¹ÀÌ ÀÏ¾î³­ Æ÷ÀÎÆ®¿¡ ÀÌÆåÆ® Ãß°¡
+            Vector3 point = other.ClosestPoint(transform.position);     //ï¿½æµ¹ï¿½ï¿½ ï¿½Ï¾î³­ ï¿½ï¿½ï¿½ï¿½Æ® 
+            GameObject tempVFX = (GameObject)Instantiate(VFX_Fire_B, point, Quaternion.identity);   //ï¿½æµ¹ï¿½ï¿½ ï¿½Ï¾î³­ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß°ï¿½
 
-            other.gameObject.GetComponent<PlayerController>().currentHp -= damage;
+            GameManager.Instance.currentHp -= damage;
 
-            if (other.gameObject.GetComponent<PlayerController>().currentHp <= 0)
+            if (GameManager.Instance.currentHp <= 0)
             {
-                Instantiate(VFX_WW_Explosion, point, Quaternion.identity);   //ÇÃ·¹ÀÌ¾î°¡ ÆÄ±« µÇ´Â ÀÌÆåÆ®¸¦ ÁØ´Ù. 
+                Instantiate(VFX_WW_Explosion, point, Quaternion.identity);   //ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ä±ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ø´ï¿½. 
                 Destroy(other.gameObject);
             }
         }
@@ -57,12 +57,12 @@ public class ProjectileMove : MonoBehaviour         //ÃÑ¾Ë Å¬·¡½º ¼³Á¤
     
     void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);  //ÃÑ¾ËÀÌ ZÃà ¾Õ¹æÇâÀ¸·Î ÀÌµ¿ÇÏ°Ô 
+        transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);  //ï¿½Ñ¾ï¿½ï¿½ï¿½ Zï¿½ï¿½ ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï°ï¿½ 
 
-        lifeTime -= Time.deltaTime;                                         //ÃÊ¸¦ ¼³Á¤ÇÏ¿© ½Ã°£ È®ÀÎ
+        lifeTime -= Time.deltaTime;                                         //ï¿½Ê¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ã°ï¿½ È®ï¿½ï¿½
         if (lifeTime < 0.0f)
         {
-            Destroy(this.gameObject);                                       //¿ÀºêÁ§Æ® ÆÄ±«
+            Destroy(this.gameObject);                                       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ä±ï¿½
         }
     }
 }
